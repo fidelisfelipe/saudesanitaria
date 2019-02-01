@@ -9,17 +9,17 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SidebarComponent implements OnInit {
     isActive: boolean;
-    collapsed: boolean;
+    collapsed: boolean = false;
     showMenu: string;
     pushRightClass: string;
-
+	
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
     constructor(private translate: TranslateService, public router: Router) {
-        this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
-        this.translate.setDefaultLang('en');
+        this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de', 'pt']);
+        this.translate.setDefaultLang('pt');
         const browserLang = this.translate.getBrowserLang();
-        this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
+        this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de|pt/) ? browserLang : 'pt');
 
         this.router.events.subscribe(val => {
             if (
@@ -30,6 +30,7 @@ export class SidebarComponent implements OnInit {
                 this.toggleSidebar();
             }
         });
+		
     }
 
     ngOnInit() {
@@ -37,6 +38,8 @@ export class SidebarComponent implements OnInit {
         this.collapsed = false;
         this.showMenu = '';
         this.pushRightClass = 'push-right';
+		
+        this.toggleCollapsed();
     }
 
 
@@ -53,6 +56,7 @@ export class SidebarComponent implements OnInit {
     }
 
     toggleCollapsed() {
+		console.log(this.collapsed);
         this.collapsed = !this.collapsed;
         this.collapsedEvent.emit(this.collapsed);
     }
